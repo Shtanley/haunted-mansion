@@ -97,7 +97,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
     enemyDeath(status.spriteAttachedTo())
-    if (status.max == 800) {
+    if (status.max == 999) {
         info.changeScoreBy(250)
         music.play(music.createSoundEffect(WaveShape.Square, 420, 1, 255, 0, 300, SoundExpressionEffect.Tremolo, InterpolationCurve.Logarithmic), music.PlaybackMode.UntilDone)
     } else {
@@ -335,7 +335,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     if (info.life() <= 4) {
         info.changeLifeBy(1)
     } else {
-        info.changeScoreBy(20)
+        info.changeScoreBy(30)
     }
 })
 function walking () {
@@ -1737,6 +1737,6 @@ game.onUpdateInterval(60000, function () {
     statusbar.attachToSprite(Boss1)
     statusbar.setColor(9, 2)
     statusbar.setLabel("AP")
-    statusbar.max = 800
-    statusbar.value = 800
+    statusbar.max = 999
+    statusbar.value = 999
 })
