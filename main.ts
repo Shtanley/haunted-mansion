@@ -1661,11 +1661,11 @@ player1 = sprites.create(img`
     ........................
     ........................
     `, SpriteKind.Player)
-tiles.placeOnTile(player1, tiles.getTileLocation(8, 1))
+tiles.placeOnTile(player1, tiles.getTileLocation(8, 2))
 controller.moveSprite(player1, 50, 50)
 scene.cameraFollowSprite(player1)
 info.setLife(5)
-player1.sayText("Use + to move and A to shoots", 5000, false)
+player1.sayText("Use + to move and A to shoot", 5000, false)
 pause(5000)
 player1.sayText("Time to bust some ghosts", 5000, false)
 pause(5000)
