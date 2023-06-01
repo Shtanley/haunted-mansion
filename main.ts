@@ -9,11 +9,7 @@ namespace SpriteKind {
  * Set player & enemy spawn point
  */
 /**
- * TODO:
- * 
- * Add enemy animations
- * 
- * Add item animations
+ * Collision
  */
 /**
  * Enemy points
@@ -74,6 +70,17 @@ function tickTimer (ms: number) {
         `, SpriteKind.Timer)
     ticks.setFlag(SpriteFlag.Ghost, true)
     ticks.lifespan = ms
+}
+function enemyDmg (enemy: Sprite) {
+    if (enemy == Boss1) {
+        sprites.destroy(enemy, effects.blizzard, 100)
+        info.changeLifeBy(-2)
+        info.changeScoreBy(-100)
+    } else {
+        sprites.destroy(enemy, effects.ashes, 100)
+        info.changeLifeBy(-1)
+        info.changeScoreBy(-25)
+    }
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile15`, function (sprite, location) {
     game.gameOver(true)
@@ -1481,12 +1488,17 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     music.play(music.createSoundEffect(WaveShape.Square, 1, 1, 192, 58, 100, SoundExpressionEffect.Warble, InterpolationCurve.Curve), music.PlaybackMode.UntilDone)
-    sprites.destroy(otherSprite, effects.ashes, 100)
-    info.changeLifeBy(-1)
-    info.changeScoreBy(-25)
+    enemyDmg(otherSprite)
     scene.cameraShake(4, 500)
 })
-let Boss1: Sprite = null
+/**
+ * TODO:
+ * 
+ * Add enemy animations
+ * 
+ * Add item animations
+ */
+let playerDialogsBoss: string[] = []
 let statusbar: StatusBarSprite = null
 let enemy1: Sprite = null
 let moving = false
@@ -1494,6 +1506,7 @@ let skillUp: Sprite = null
 let projectile: Sprite = null
 let slash: Sprite = null
 let heart: Sprite = null
+let Boss1: Sprite = null
 let ticks: Sprite = null
 let lastDirection = 0
 let player1: Sprite = null
@@ -1652,11 +1665,12 @@ tiles.placeOnTile(player1, tiles.getTileLocation(8, 1))
 controller.moveSprite(player1, 50, 50)
 scene.cameraFollowSprite(player1)
 info.setLife(5)
+player1.sayText("Use + to move and A to shoots", 5000, false)
+pause(5000)
+player1.sayText("Time to bust some ghosts", 5000, false)
+pause(5000)
 /**
  * Make sure walking animation is on only when player is moving
- */
-/**
- * Collision
  */
 game.onUpdate(function () {
     moving = controller.up.isPressed() || controller.down.isPressed() || controller.left.isPressed() || controller.right.isPressed()
@@ -1739,4 +1753,11 @@ game.onUpdateInterval(60000, function () {
     statusbar.setLabel("AP")
     statusbar.max = 999
     statusbar.value = 999
+    playerDialogsBoss = [
+    "I hear a BOSS spawning...",
+    "BIG GUY!!!",
+    "This has to be the last one... right?",
+    "I am not getting paid enough for this."
+    ]
+    player1.sayText(playerDialogsBoss._pickRandom(), 3000, false)
 })
